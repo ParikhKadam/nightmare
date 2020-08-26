@@ -1,5 +1,7 @@
 # gdb-gef
 
+This file was contributed to by `deveynull` (also made the hello_world binary)
+
 So throughout this project, we will be using a lot of different tools. The purpose of this module is to show you some of the basics of three of those tools. We will start with gdb-gef.
 
 First off, gdb is a debugger (specifically the gnu debugger). Gef is an a gdb wrapper, designed  to give us some extended features (https://github.com/hugsy/gef). To install it, you can find the instructions on the github page. it's super simple.
@@ -134,7 +136,14 @@ Breakpoint 1, 0x08048409 in main ()
 ```
 
 
-Now you can step through the function by typing 'next' or 'n' until the program ends. 
+Now you can step through the function by typing 'nexti' until the program ends. 'nexti' will have you go instruction by intruction through the program, but will not step into function calls such as puts. 
+
+Other ways to navigate a program are:
+* 'next' - which will take you through one line of code, but will step over function calls such as puts. 
+* 'step' - which will take you through one line of code, but will step into function calls
+* 'stepi' - whch will take you through one instruction at a time, stepping into function calls
+
+For each of these methods, work through the program after setting a breakpoint in main. Take specific care to see what step and stepi see after entering puts. Most of the time, because those are part of standard libraries, we don't need to step into anything.
 
 ## Breakpoints
 
@@ -305,7 +314,7 @@ Breakpoint 1, 0xf7e4a360 in puts () from /lib32/libc.so.6
 
 ## Viewing Things
 
-So one thing that gdb is really useful for is viewing the values of different things. Once we are dropped into a debugger while the process is viewing, let's view the contents of the `esp` register:
+So one thing that gdb is really useful for is viewing the values of different things. Once we are dropped into a debugger while the process is viewing, let's view the contents of the `esp` register. To get there we will break on main, run, and then advance three instructions: 
 
 ```
 gef➤  break main 
@@ -362,7 +371,7 @@ gef➤
 
 ```
 
-If we take one more "nexti" we can see that the register `esp` holds the value `0xffffd0d0`, which is a pointer. Let's see what it points to:
+We can see that the register `esp` holds the value `0xffffd0d0`, which is a pointer. Let's see what it points to:
 
 ```
 gef➤  x/a 0xffffd0d0
@@ -374,7 +383,7 @@ gef➤  x/s 0x80484b0
 0x80484b0:	"hello world!"
 ```
 
-So we can see that it points to the string `hello world!`, which will be printed by `puts` (since `puts` takes a single argument which is a char pointer). One thing in gdb when you examine things with `x`, you can specify what you want to examine it as. Possible things include as an address 'x/a', a number of characters 'x/10c' string `x/s`, as a qword `x/g`, or as a dword `x/w`.
+So we can see that it points to the string `hello world!`, which will be printed by `puts` (since `puts` takes a single argument which is a char pointer). One thing in gdb when you examine things with `x`, you can specify what you want to examine it as. Possible things include as an address `x/a`, a number of characters `x/10c` string `x/s`, as a qword `x/g`, or as a dword `x/w`.
 
 let's view the contents of all of the registers:
 
@@ -507,4 +516,6 @@ Let's say we wanted to jump directly to an instruction like `0x08048451`, and sk
 gef➤  j *0x08048451
 Continuing at 0x0x08048451.
 ```
+
+That was a lot, keep referring to this, your notes, and GDB cheatsheets as you go along. 
 
