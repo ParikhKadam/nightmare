@@ -55,10 +55,12 @@ Type "apropos word" to search for commands related to "word".
 
 ## Running
 
+So these examples revolve around the `titan` binary. This binary is not included. The purpose of this is to show you various helpful functionallity with gdb-gef, and the commands to do it.
+
 To run the binary `titan` in gdb:
 
 ```
-gdb ./titan
+$	gdb ./titan
 GNU gdb (Ubuntu 8.2.91.20190405-0ubuntu3) 8.2.91.20190405-git
 Copyright (C) 2019 Free Software Foundation, Inc.
 License GPLv3+: GNU GPL version 3 or later <http://gnu.org/licenses/gpl.html>
